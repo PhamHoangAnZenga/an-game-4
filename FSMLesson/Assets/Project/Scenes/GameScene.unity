@@ -618,13 +618,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020769569}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5388f9cd313b44b0c9eaeb4c68c0f25a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   _rb: {fileID: 1020769572}
   _animator: {fileID: 2890293761724111101}
+  _camera: {fileID: 330585545}
   _idleTime: 1.5
   _activeTime: 0.5
 --- !u!54 &1020769572
@@ -761,6 +762,7 @@ MonoBehaviour:
   _animator: {fileID: 4148973308294325292}
   _moveSpeed: 5
   _idleTime: 2
+  _delayTime: 0.5
   _standPos:
   - {fileID: 1630692876}
   - {fileID: 968270678}

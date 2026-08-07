@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
         Move
     }
 
-
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _animator;
 
@@ -28,7 +27,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _idleTime = 2f;
     [SerializeField] private float _delayTime = 0.5f;
-
 
     [Header("Stand Position")]
     [SerializeField] private Transform[] _standPos;
@@ -107,7 +105,6 @@ public class Enemy : MonoBehaviour
 
             _attack = Attack.Delay;
             _timer = Time.time + _delayTime;
-
 
             _animator.Play(_ACTIVE);
         }

@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 
 public class Player : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _animator;
+    [SerializeField] private Camera _camera;
 
     [Header("Config")]
     [SerializeField] private float _idleTime = 1.5f;
@@ -27,7 +30,10 @@ public class Player : MonoBehaviour
     private float _timer;
 
     private bool _moveFlag = false;
+    private bool _controlFlag = false;
 
+    private LayerMask _playerMask;
+    private LayerMask _groundMask;
 
     void Awake()
     {
@@ -41,7 +47,7 @@ public class Player : MonoBehaviour
         while (true)
         {
             switch (_state)
-            {                
+            {
                 case PlayerState.Initialize:
                     InitState();
                     break;
@@ -58,22 +64,43 @@ public class Player : MonoBehaviour
             yield return 0;
         }
     }
-
-    void Udpate()
+    
+    void Update()
     {
+        if (_controlFlag)
+        {
+            Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if(Physics.Raycast(ray, _playerMask))
+            {
+                _moveFlag = true;                
+            }
+            else
+            {
+                _moveFlag = false;
+            }
+        }
+        else
+        {
+            _moveFlag = false;
+        }
     }
 
     void FixedUpdate()
     {
         if (_moveFlag)
         {
-            
+            Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if(Physics.Raycast(ray, out RaycastHit hit, _groundMask))
+            {
+                _rb.MovePosition(hit.point);
+            }
         }
     }
 
     private void InitState()
     {
         _state = PlayerState.Idle;
+
         _timer = Time.time + _idleTime;
     }
 
@@ -85,9 +112,9 @@ public class Player : MonoBehaviour
 
             _animator.Play(_ACTIVE);
 
-            _moveFlag = true;
+            _controlFlag = true;
 
-            _timer = Time.time + _idleTime;
+            _timer = Time.time + _activeTime;
         }
     }
 
@@ -99,7 +126,7 @@ public class Player : MonoBehaviour
 
             _animator.Play(_IDLE);
 
-            _moveFlag = false;
+            _controlFlag = false;
 
             _timer = Time.time + _idleTime;
         }
