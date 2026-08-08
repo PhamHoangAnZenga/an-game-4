@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -11,7 +12,7 @@ public class Enemy : MonoBehaviour
         Initialize,
         Idle,
         Danger,
-        EndGame,
+        GameOver,
     }
 
     private enum Attack
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _animator;
+    [SerializeField] private GameManager _gameManager;
 
     [Header("Config")]
     [SerializeField] private float _moveSpeed = 3f;
@@ -62,7 +64,8 @@ public class Enemy : MonoBehaviour
                 case EnemyState.Danger:
                     DangerState();
                     break;
-                case EnemyState.EndGame:
+                case EnemyState.GameOver:
+                    GameOver();
                     yield break;
             }
 
@@ -94,7 +97,6 @@ public class Enemy : MonoBehaviour
 
         _currentPos = Random.Range(0, 2);
         transform.position = _standPos[_currentPos].position;
-        Debug.Log(transform.position);
     }
 
     private void IdleState()
@@ -133,7 +135,7 @@ public class Enemy : MonoBehaviour
             _moveFlag = true;
         }
     }
-    
+
     private void Move()
     {
         Vector3 target = _standPos[_currentPos].position;
@@ -149,12 +151,18 @@ public class Enemy : MonoBehaviour
             _timer = Time.time + _idleTime;
         }
     }
+    
+    private void GameOver()
+    {
+        _gameManager.GameOver();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Player>())
+        if (collision.gameObject.TryGetComponent(out Player player))
         {
-            _state = EnemyState.EndGame;
+            _state = EnemyState.GameOver;
+            player.GameOver();            
         }
     }
 }

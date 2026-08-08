@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
@@ -13,13 +14,14 @@ public class Player : MonoBehaviour
         Initialize,
         Idle,
         Active,
-        EndGame,
+        GameOver,
     }
 
 
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _animator;
     [SerializeField] private Camera _camera;
+    [SerializeField] private GameManager _gameManager;
 
     [Header("Config")]
     [SerializeField] private float _idleTime = 1.5f;
@@ -35,9 +37,14 @@ public class Player : MonoBehaviour
     private LayerMask _playerMask;
     private LayerMask _groundMask;
 
+    private Vector3 _target;
+
     void Awake()
     {
         if (_rb == null) _rb = GetComponent<Rigidbody>();
+
+        _playerMask = LayerMask.GetMask("Player");
+        _groundMask = LayerMask.GetMask("Ground");
     }
 
     IEnumerator Start()
@@ -57,7 +64,7 @@ public class Player : MonoBehaviour
                 case PlayerState.Active:
                     ActiveState();
                     break;
-                case PlayerState.EndGame:
+                case PlayerState.GameOver:
                     yield break;
             }
 
@@ -69,32 +76,49 @@ public class Player : MonoBehaviour
     {
         if (_controlFlag)
         {
-            Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if(Physics.Raycast(ray, _playerMask))
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                _moveFlag = true;                
-            }
-            else
-            {
-                _moveFlag = false;
+                Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                if (Physics.Raycast(ray, Mathf.Infinity,  _playerMask))
+                {
+                    Debug.Log("in");
+                    _moveFlag = true;
+                }
+                else
+                {
+                    _moveFlag = false;
+                }
             }
         }
         else
         {
             _moveFlag = false;
         }
+
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            _moveFlag = false;
+        }
+
     }
 
     void FixedUpdate()
     {
         if (_moveFlag)
-        {
+        {            
             Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if(Physics.Raycast(ray, out RaycastHit hit, _groundMask))
+            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _groundMask))
             {
-                _rb.MovePosition(hit.point);
+                _target = hit.point;
+                _target.y = transform.position.y;   
+                _rb.MovePosition(_target);                
             }
         }
+    }
+    public void GameOver()
+    {
+        _controlFlag = false;
+        _state = PlayerState.GameOver;
     }
 
     private void InitState()
@@ -131,12 +155,13 @@ public class Player : MonoBehaviour
             _timer = Time.time + _idleTime;
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider colider)
     {
-        if (collision.gameObject.GetComponent<Enemy>())
+        if (colider.gameObject.TryGetComponent(out Goal goal))
         {
-            _state = PlayerState.EndGame;
+            _state = PlayerState.GameOver;
+            GameOver();
+            _gameManager.Win();         
         }
     }
 }

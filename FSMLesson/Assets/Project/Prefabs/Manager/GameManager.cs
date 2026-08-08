@@ -1,16 +1,47 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    [SerializeField] private Clock _clock;
+    [SerializeField] private GameObject _pausePannel;
+
+    private bool _gameOn;
+    
+    void Awake()
+    {        
+        _pausePannel.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeState()
     {
-        
+        _gameOn = !_gameOn;
+
+        if (_gameOn) ResumeGame();
+        else PauseGame();
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0f;
+        _clock.GamePause();
+        _pausePannel.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        _pausePannel.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        _clock.GameOver();
+    }
+
+    public void Win()
+    {
+        Time.timeScale = 0f;
+        _clock.Win();
     }
 }
