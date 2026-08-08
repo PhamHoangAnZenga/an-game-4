@@ -15,7 +15,7 @@ public class PauseButton : MonoBehaviour
         _button.onClick.AddListener(PauseGame);
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         _gameManager.ChangeState();
     }   

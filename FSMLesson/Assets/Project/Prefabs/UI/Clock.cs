@@ -5,7 +5,6 @@ using UnityEngine;
 public class Clock : MonoBehaviour
 {
     private bool _gameOver = false;
-    private bool _gamePause = false;
 
     [SerializeField] private TextMeshProUGUI _tmp;
     [SerializeField] private float _playTime;
@@ -43,7 +42,6 @@ public class Clock : MonoBehaviour
     }
     public void GamePause()
     {
-        _gamePause = true;
         _tmp.text = "Pause!";
     }
 

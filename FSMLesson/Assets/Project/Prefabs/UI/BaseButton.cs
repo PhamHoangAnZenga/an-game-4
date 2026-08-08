@@ -18,7 +18,7 @@ public class BaseButton : MonoBehaviour
         _button.onClick.AddListener(PlaySound);
     }
 
-    private void PlaySound()
+    public void PlaySound()
     {
         if (_audioSource == null || _audioClip == null) return;
         

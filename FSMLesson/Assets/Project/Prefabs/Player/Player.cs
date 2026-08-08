@@ -1,22 +1,18 @@
 using System.Collections;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 
 public class Player : MonoBehaviour
 {
-    private readonly int _IDLE = Animator.StringToHash("PlayerIdle");
-    private readonly int _ACTIVE = Animator.StringToHash("PlayerActive");
+    private readonly int IDLE = Animator.StringToHash("PlayerIdle");
+    private readonly int ACTIVE = Animator.StringToHash("PlayerActive");
 
     private enum PlayerState
     {
         Initialize,
         Idle,
         Active,
-        GameOver,
     }
-
 
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Animator _animator;
@@ -26,7 +22,6 @@ public class Player : MonoBehaviour
     [Header("Config")]
     [SerializeField] private float _idleTime = 1.5f;
     [SerializeField] private float _activeTime = 0.5f;
-
 
     private PlayerState _state;
     private float _timer;
@@ -38,6 +33,8 @@ public class Player : MonoBehaviour
     private LayerMask _groundMask;
 
     private Vector3 _target;
+
+    private bool _gameOn = true;
 
     void Awake()
     {
@@ -51,7 +48,7 @@ public class Player : MonoBehaviour
     {
         _state = PlayerState.Initialize;
 
-        while (true)
+        while (_gameOn)
         {
             switch (_state)
             {
@@ -64,8 +61,6 @@ public class Player : MonoBehaviour
                 case PlayerState.Active:
                     ActiveState();
                     break;
-                case PlayerState.GameOver:
-                    yield break;
             }
 
             yield return 0;
@@ -76,18 +71,13 @@ public class Player : MonoBehaviour
     {
         if (_controlFlag)
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-            {
+            if (_moveFlag == false && Mouse.current.leftButton.isPressed)
+            {            
                 Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-                if (Physics.Raycast(ray, Mathf.Infinity,  _playerMask))
+                if (Physics.Raycast(ray, Mathf.Infinity, _playerMask))
                 {
-                    Debug.Log("in");
                     _moveFlag = true;
-                }
-                else
-                {
-                    _moveFlag = false;
-                }
+                }      
             }
         }
         else
@@ -117,8 +107,8 @@ public class Player : MonoBehaviour
     }
     public void GameOver()
     {
+        _gameOn = false;
         _controlFlag = false;
-        _state = PlayerState.GameOver;
     }
 
     private void InitState()
@@ -134,7 +124,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.Active;
 
-            _animator.Play(_ACTIVE);
+            _animator.Play(ACTIVE);
 
             _controlFlag = true;
 
@@ -148,18 +138,18 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.Idle;
 
-            _animator.Play(_IDLE);
+            _animator.Play(IDLE);
 
             _controlFlag = false;
 
             _timer = Time.time + _idleTime;
         }
     }
+
     private void OnTriggerEnter(Collider colider)
     {
         if (colider.gameObject.TryGetComponent(out Goal goal))
         {
-            _state = PlayerState.GameOver;
             GameOver();
             _gameManager.Win();         
         }

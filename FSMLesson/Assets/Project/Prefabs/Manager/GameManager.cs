@@ -4,12 +4,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Clock _clock;
+    [SerializeField] private Goal _goal;
     [SerializeField] private GameObject _pausePannel;
 
-    private bool _gameOn;
-    
+    private bool _gameOn = true;
+
     void Awake()
-    {        
+    {
         _pausePannel.SetActive(false);
     }
 
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
         if (_gameOn) ResumeGame();
         else PauseGame();
     }
-
+    
     private void PauseGame()
     {
         Time.timeScale = 0f;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         _clock.GameOver();
+        _goal.GameOver();
     }
 
     public void Win()

@@ -1,18 +1,16 @@
 using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private readonly int _IDLE = Animator.StringToHash("EnemyIdle");
-    private readonly int _ACTIVE = Animator.StringToHash("EnemyActive");
+    private readonly int IDLE = Animator.StringToHash("EnemyIdle");
+    private readonly int ACTIVE = Animator.StringToHash("EnemyActive");
 
     private enum EnemyState
     {
         Initialize,
         Idle,
-        Danger,
-        GameOver,
+        Danger
     }
 
     private enum Attack
@@ -38,9 +36,9 @@ public class Enemy : MonoBehaviour
 
     private float _timer;
 
-    private bool _moveFlag = false;
-
     private int _currentPos;
+
+    private bool _gameOn = true;
 
     void Awake()
     {
@@ -51,7 +49,7 @@ public class Enemy : MonoBehaviour
     {
         _state = EnemyState.Initialize;
 
-        while (true)
+        while (_gameOn)
         {
             switch (_state)
             {                
@@ -64,29 +62,9 @@ public class Enemy : MonoBehaviour
                 case EnemyState.Danger:
                     DangerState();
                     break;
-                case EnemyState.GameOver:
-                    GameOver();
-                    yield break;
             }
 
             yield return 0;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (_moveFlag)
-        {
-            Vector3 target = _standPos[_currentPos].position;
-            target.y = transform.position.y;
-
-            Vector3 newPos = Vector3.MoveTowards(
-                transform.position,
-                target,
-                _moveSpeed * Time.fixedDeltaTime
-            );
-
-            _rb.MovePosition(newPos);
         }
     }
 
@@ -108,7 +86,7 @@ public class Enemy : MonoBehaviour
             _attack = Attack.Delay;
             _timer = Time.time + _delayTime;
 
-            _animator.Play(_ACTIVE);
+            _animator.Play(ACTIVE);
         }
     }
 
@@ -132,7 +110,11 @@ public class Enemy : MonoBehaviour
             _attack = Attack.Move;
 
             _currentPos = 1 - _currentPos;
-            _moveFlag = true;
+
+            Vector3 target = _standPos[_currentPos].position;
+            target.y = transform.position.y;
+            _rb.linearVelocity = (target - transform.position).normalized * _moveSpeed;
+
         }
     }
 
@@ -145,24 +127,19 @@ public class Enemy : MonoBehaviour
         {
             _state = EnemyState.Idle;
 
-            _animator.Play(_IDLE);
+            _animator.Play(IDLE);
 
-            _moveFlag = false;
             _timer = Time.time + _idleTime;
         }
     }
     
-    private void GameOver()
-    {
-        _gameManager.GameOver();
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out Player player))
         {
-            _state = EnemyState.GameOver;
-            player.GameOver();            
+            player.GameOver();
+            _gameManager.GameOver();
+            _gameOn = false;     
         }
     }
 }
