@@ -460,66 +460,6 @@ PrefabInstance:
       propertyPath: _audioSource
       value: 
       objectReference: {fileID: 1500727415}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 917586083}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 917586083}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2093050578060962592, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -37
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -29
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7432785820191790507, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 8535468269602825922, guid: 8e2171120217c4397926a62d38a28190, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -881,17 +821,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb660d1f55b2d44f28d4355361cc7273, type: 3}
---- !u!114 &917586083 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1769747216089358574, guid: 8e2171120217c4397926a62d38a28190, type: 3}
-  m_PrefabInstance: {fileID: 498361062}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c406c15f8ba57477db46fd56caa6d5c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BaseButton
 --- !u!1 &968270677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,10 +1468,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1514285737}
     m_Modifications:
-    - target: {fileID: 2416998540053249675, guid: 1d2aaa2daf3a04deb823e8eedc895f68, type: 3}
-      propertyPath: m_text
-      value: Game Over!
-      objectReference: {fileID: 0}
     - target: {fileID: 2967853303059654281, guid: 1d2aaa2daf3a04deb823e8eedc895f68, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1683,10 +1608,6 @@ PrefabInstance:
     - target: {fileID: 8260472561734264748, guid: 8fcaa760764cb442d90776d770b602cb, type: 3}
       propertyPath: m_Name
       value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 8260472561734264748, guid: 8fcaa760764cb442d90776d770b602cb, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -126,6 +126,7 @@ public class Enemy : MonoBehaviour
         if (Vector3.Distance(transform.position, target) < 0.01f)
         {
             _state = EnemyState.Idle;
+            _rb.linearVelocity = Vector3.zero;
 
             _animator.Play(IDLE);
 

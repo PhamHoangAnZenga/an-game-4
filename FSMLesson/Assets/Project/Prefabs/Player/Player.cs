@@ -95,20 +95,22 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         if (_moveFlag)
-        {            
+        {
             Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _groundMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _groundMask))
             {
                 _target = hit.point;
-                _target.y = transform.position.y;   
-                _rb.MovePosition(_target);                
+                _target.y = transform.position.y;
+                _rb.MovePosition(_target);
             }
         }
     }
+    
     public void GameOver()
     {
         _gameOn = false;
         _controlFlag = false;
+        _animator.Play(ACTIVE);
     }
 
     private void InitState()
