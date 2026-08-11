@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     private bool _gameOn = true;
 
+    private bool _isEnd = false;
+
     void Awake()
     {
         _pausePannel.SetActive(false);
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState()
     {
+        if (_isEnd) return;
+        
         _gameOn = !_gameOn;
 
         if (_gameOn) ResumeGame();
@@ -37,12 +41,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        _isEnd = true;
         _clock.GameOver();
         _goal.GameOver();
     }
 
     public void Win()
     {
+        _isEnd = true;
         Time.timeScale = 0f;
         _clock.Win();
     }
